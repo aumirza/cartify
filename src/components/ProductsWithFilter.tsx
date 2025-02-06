@@ -11,7 +11,7 @@ export function ProductsWithFilter({
   const [products, setProducts] = useState<IProduct[]>(aProducts);
 
   return (
-    <div className="w-11/12 flex gap-5">
+    <div className="w-full flex flex-col sm:flex-row gap-5">
       <div className="flex flex-col w-full sm:w-1/2 md:w-1/4">
         <FilterControls setProducts={setProducts} products={aProducts} />
       </div>
