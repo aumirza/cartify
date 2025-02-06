@@ -41,6 +41,10 @@ export async function fetchProductsByCategory(category: string) {
 export async function fetchProduct(id: string) {
   try {
     const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+    // if response is empty
+    if (!res || res.status !== 200) {
+      return null;
+    }
     const raw = await res.json();
     return {
       ...raw,

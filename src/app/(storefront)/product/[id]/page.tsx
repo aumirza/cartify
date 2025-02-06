@@ -11,7 +11,7 @@ export default async function ProductPage({
   const { id } = await params;
   const product = await fetchProduct(id);
 
-  if (!product) {
+  if (!product || !product.id) {
     notFound();
   }
 
@@ -36,7 +36,14 @@ export async function generateMetadata({
 }) {
   const { id } = await params;
   const product = await fetchProduct(id);
+
+  if (!product) {
+    return {
+      title: "Product Not Found - Cartify",
+    };
+  }
+
   return {
-    title: `Cartify | ${product?.title}`,
+    title: `Cartify | ${product.title}`,
   };
 }
