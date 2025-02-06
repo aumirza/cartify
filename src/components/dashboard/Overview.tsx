@@ -1,7 +1,11 @@
 import { OverviewChart } from "@/components/dashboard/OverviewCard";
 import { RecentSales } from "@/components/dashboard/RecentSales";
 import { StatCard } from "@/components/dashboard/StatCard";
-import { statsData, overviewData, recentSales } from "../constants";
+import {
+  statsData,
+  overviewData,
+  recentSales,
+} from "../../app/dashboard/constants";
 
 export function Overview() {
   return (

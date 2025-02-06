@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Overview } from "./components/Overview";
-import { Analytics } from "./components/Analytics";
+import { Overview } from "@/components/dashboard/Overview";
+import { Analytics } from "@/components/dashboard/Analytics";
 
 export default function DashboardPage() {
   return (
