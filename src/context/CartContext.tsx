@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { loadCartFromStorage, saveCartToStorage } from "@/utils/localStorage";
+import { loadFromStorage, saveToStorage } from "@/utils/localStorage";
 
 interface CartItem {
   product: IProduct;
@@ -17,8 +17,8 @@ type CartAction =
   | { type: "REMOVE_FROM_CART"; productId: string }
   | { type: "INCREMENT_QUANTITY"; productId: string }
   | { type: "DECREMENT_QUANTITY"; productId: string }
-  | { type: "CLEAR_CART" };
-// | { type: "SYNC_STORAGE"; items: CartItem[] };
+  | { type: "CLEAR_CART" }
+  | { type: "SYNC_STORAGE"; items: CartItem[] };
 
 const CartContext = createContext<{
   state: CartState;
@@ -83,24 +83,32 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         items: [],
       };
       break;
+    case "SYNC_STORAGE":
+      newState = {
+        ...state,
+        items: action.items,
+      };
     default:
       newState = state;
   }
 
   // Save to localStorage after state changes
-  saveCartToStorage(newState || state);
+  saveToStorage("CART", newState || state);
   return newState || state;
 };
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [state, dispatch] = useReducer(cartReducer, loadCartFromStorage());
+  const [state, dispatch] = useReducer(
+    cartReducer,
+    loadFromStorage("CART", { items: [] })
+  );
 
   // Sync with localStorage when window is focused
   useEffect(() => {
     const handleFocus = () => {
-      const storedCart = loadCartFromStorage();
+      const storedCart = loadFromStorage("CART", { items: [] });
       if (JSON.stringify(storedCart) !== JSON.stringify(state)) {
         dispatch({ type: "SYNC_STORAGE", ...storedCart });
       }

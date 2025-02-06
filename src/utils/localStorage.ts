@@ -1,14 +1,21 @@
-import { CartItem } from "@/types/cart";
+const STORAGE_KEYS = {
+  CART: "cartify-cart",
+  WISHLIST: "cartify-wishlist",
+} as const;
 
-const CART_STORAGE_KEY = "cartify-cart";
-
-export const loadCartFromStorage = () => {
-  if (typeof window === "undefined") return { items: [] };
-  const stored = localStorage.getItem(CART_STORAGE_KEY);
-  return stored ? JSON.parse(stored) : { items: [] };
+export const loadFromStorage = <T>(
+  key: keyof typeof STORAGE_KEYS,
+  defaultValue: T
+): T => {
+  if (typeof window === "undefined") return defaultValue;
+  const stored = localStorage.getItem(STORAGE_KEYS[key]);
+  return stored ? JSON.parse(stored) : defaultValue;
 };
 
-export const saveCartToStorage = (cart: { items: CartItem[] }) => {
+export const saveToStorage = <T>(
+  key: keyof typeof STORAGE_KEYS,
+  data: T
+): void => {
   if (typeof window === "undefined") return;
-  localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  localStorage.setItem(STORAGE_KEYS[key], JSON.stringify(data));
 };

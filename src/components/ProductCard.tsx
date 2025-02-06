@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
-import { HeartIcon, StarIcon } from "lucide-react";
+import { StarIcon } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { QuantityControls } from "./QuantityControls";
+import { WishlistButton } from "./WishlistButton";
 
 export function ProductCard({ product }: { product: IProduct }) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
   const {
     addToCart,
     removeFromCart,
@@ -29,16 +29,10 @@ export function ProductCard({ product }: { product: IProduct }) {
   return (
     <div className="w-full group flex flex-col gap-2">
       <div className="aspect-square relative overflow-hidden rounded-lg bg-gray-100 p-3">
-        <button
-          onClick={() => setIsWishlisted(!isWishlisted)}
-          className="absolute top-4 right-4 z-10 p-1.5 rounded-full bg-white/80 hover:bg-white"
-        >
-          <HeartIcon
-            className={`size-5 ${
-              isWishlisted ? "fill-red-500 text-red-500" : "text-gray-600"
-            }`}
-          />
-        </button>
+        <WishlistButton
+          productId={product.id}
+          className="absolute top-4 right-4 z-10"
+        />
         <Image
           src={product.image}
           alt={product.title}

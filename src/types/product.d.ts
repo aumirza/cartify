@@ -10,3 +10,5 @@ interface IProduct {
   };
   image: string;
 }
+
+type IProductId = IProduct["id"];
