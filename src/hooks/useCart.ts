@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartContext } from "@/context/CartContext";
+import { useCartContext } from "@/contexts/CartContext";
 
 export const useCart = () => {
   const { state, dispatch } = useCartContext();

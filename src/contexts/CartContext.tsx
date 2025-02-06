@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import { loadFromStorage, saveToStorage } from "@/utils/localStorage";
+import { loadFromStorage, saveToStorage } from "@/lib/localStorage";
 
 interface CartItem {
   product: IProduct;

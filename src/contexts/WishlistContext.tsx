@@ -1,6 +1,6 @@
 "use client";
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { loadFromStorage, saveToStorage } from "@/utils/localStorage";
+import { loadFromStorage, saveToStorage } from "@/lib/localStorage";
 
 interface WishlistContextType {
   wishlist: IProductId[];

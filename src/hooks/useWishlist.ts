@@ -1,4 +1,4 @@
-import { WishlistContext } from "@/context/WishlistContext";
+import { WishlistContext } from "@/contexts/WishlistContext";
 import { useContext } from "react";
 
 export function useWishlist() {
