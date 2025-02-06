@@ -28,7 +28,7 @@ export function ProductDetails({ product }: { product: IProduct }) {
   return (
     <div className="grid grid-cols-1 gap-5 md:grid-cols-5 p-5">
       <div className="md:col-span-2">
-        <div className="relative aspect-square max-w-sm bg-gray-50 rounded-lg p-4">
+        <div className="relative aspect-square max-w-sm bg-secondary dark:bg-white rounded-lg p-4">
           <WishlistButton
             productId={product.id}
             className="absolute top-4 right-4 z-10"
@@ -36,7 +36,7 @@ export function ProductDetails({ product }: { product: IProduct }) {
           <Image
             src={product.image}
             alt={product.title}
-            className="object-contain mix-blend-multiply"
+            className="object-contain"
             fill
           />
         </div>
@@ -45,11 +45,11 @@ export function ProductDetails({ product }: { product: IProduct }) {
         <div className="space-y-2">
           <h1 className="text-2xl md:text-3xl font-bold">{product.title}</h1>
           <div className="flex items-center gap-4">
-            <span className="text-2xl font-bold text-blue-600">
+            <span className="text-2xl font-bold text-primary">
               ${product.price}
             </span>
-            <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded">
-              <StarIcon className="fill-yellow-500 text-yellow-500 h-4 w-4" />
+            <div className="flex items-center gap-1 bg-background px-2 py-1 rounded">
+              <StarIcon className="fill-warning text-warning h-4 w-4" />
               <span className="text-sm">
                 {product.rating.rate} ({product.rating.count})
               </span>
@@ -79,7 +79,7 @@ export function ProductDetails({ product }: { product: IProduct }) {
           ) : (
             <button
               onClick={handleAddToCart}
-              className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors"
             >
               <ShoppingCart className="h-5 w-5" />
               Add to Cart

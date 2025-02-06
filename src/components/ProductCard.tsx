@@ -28,9 +28,9 @@ export function ProductCard({ product }: { product: IProduct }) {
   };
 
   return (
-    <div className="w-full group flex flex-col gap-2">
+    <div className="w-full h-full group flex flex-col gap-2 shadow p-2 rounded-lg">
       <Link href={`/product/${product.id}`} className="block">
-        <div className="aspect-square relative overflow-hidden rounded-lg bg-gray-100 p-3">
+        <div className="aspect-square relative overflow-hidden rounded-lg bg-white p-3">
           <WishlistButton
             productId={product.id}
             className="absolute top-4 right-4 z-10"
@@ -44,13 +44,11 @@ export function ProductCard({ product }: { product: IProduct }) {
         </div>
       </Link>
 
-      <div className="flex-grow flex flex-col gap-1">
-        <Link href={`/product/${product.id}`}>
-          <h3 className="flex-grow font-medium text-sm line-clamp-2">
-            {product.title}
-          </h3>
+      <div className="flex-grow flex flex-col gap-2">
+        <Link className="flex-grow" href={`/product/${product.id}`}>
+          <h3 className="font-medium text-sm line-clamp-2">{product.title}</h3>
         </Link>
-        <div className="">
+        <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <p className="text-lg font-bold">${product.price}</p>
             <div className="flex gap-0.5 items-center">
@@ -73,7 +71,7 @@ export function ProductCard({ product }: { product: IProduct }) {
           ) : (
             <button
               onClick={handleAddToCart}
-              className="w-full bg-blue-500 text-white px-3 py-1.5 rounded-md hover:bg-blue-600 text-sm mt-1"
+              className="w-full bg-primary text-primary-foreground px-3 py-1.5 rounded-md hover:bg-primary/90 text-sm mt-1"
             >
               Add to Cart
             </button>

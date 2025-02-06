@@ -13,8 +13,12 @@ export function Footer() {
             <Link href="https://github.com/aumirza" target="_blank">
               Ahmadullah Mirza
             </Link>
-            . The source code is available on{" "}
-            <Link href="https://github.com/aumirza/cartify" target="_blank">
+            <span> . The source code is available on </span>
+            <Link
+              className="underline"
+              href="https://github.com/aumirza/cartify"
+              target="_blank"
+            >
               GitHub
             </Link>
             .<br />© {currentYear} Cartify. All rights reserved.

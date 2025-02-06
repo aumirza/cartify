@@ -3,6 +3,7 @@ import Link from "next/link";
 import NavBar from "./NavBar";
 import { ProfileMenu } from "./ProfileMenu";
 import { CartButton } from "./CartButton";
+import { ThemeToggle } from "./dashboard/ThemeToggle";
 
 export function Header() {
   return (
@@ -16,6 +17,7 @@ export function Header() {
       <div className="flex items-center gap-4">
         <CartButton />
         <ProfileMenu />
+        <ThemeToggle />
       </div>
     </header>
   );

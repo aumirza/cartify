@@ -25,14 +25,18 @@ export function QuantityControls({
         {quantity === 1 ? (
           <Button
             onClick={onRemove}
-            className="size-8 bg-red-100 text-red-600 rounded-md hover:bg-red-200"
+            variant="destructive"
+            size="icon"
+            className="size-8"
           >
             <TrashIcon className="!size-4" />
           </Button>
         ) : (
           <Button
             onClick={onDecrement}
-            className="size-8 bg-blue-100 text-blue-600 rounded-md hover:bg-blue-200"
+            variant="secondary"
+            size="icon"
+            className="size-8"
             disabled={quantity <= 1}
           >
             <MinusIcon className="!size-4" />
@@ -41,13 +45,17 @@ export function QuantityControls({
         <span className="w-8 text-center">{quantity}</span>
         <Button
           onClick={onIncrement}
-          className="size-8 bg-blue-100 text-blue-600 rounded-md hover:bg-blue-200"
+          variant="secondary"
+          size="icon"
+          className="size-8"
         >
           <PlusIcon className="!size-4" />
         </Button>
       </div>
       {showTotal && price && (
-        <span className="text-gray-600">${(price * quantity).toFixed(2)}</span>
+        <span className="text-muted-foreground">
+          ${(price * quantity).toFixed(2)}
+        </span>
       )}
     </div>
   );
