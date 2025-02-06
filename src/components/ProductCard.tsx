@@ -1,51 +1,86 @@
-import React from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
+"use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
-import { StarIcon } from "lucide-react";
+import { HeartIcon, StarIcon } from "lucide-react";
+import { useCart } from "@/hooks/useCart";
+import { QuantityControls } from "./QuantityControls";
 
 export function ProductCard({ product }: { product: IProduct }) {
+  const [isWishlisted, setIsWishlisted] = useState(false);
+  const {
+    addToCart,
+    removeFromCart,
+    isInCart,
+    incrementQuantity,
+    decrementQuantity,
+    cart,
+  } = useCart();
+
+  const cartItem = cart.find((item) => item.product.id === product.id);
+  const quantity = cartItem?.quantity || 0;
+
+  const handleAddToCart = () => {
+    if (!isInCart(product.id)) {
+      addToCart(product);
+    }
+  };
+
   return (
-    <Card className="flex flex-col">
-      <CardHeader className="flex w-full h-56 justify-center items-center">
+    <div className="w-full group flex flex-col gap-2">
+      <div className="aspect-square relative overflow-hidden rounded-lg bg-gray-100 p-3">
+        <button
+          onClick={() => setIsWishlisted(!isWishlisted)}
+          className="absolute top-4 right-4 z-10 p-1.5 rounded-full bg-white/80 hover:bg-white"
+        >
+          <HeartIcon
+            className={`size-5 ${
+              isWishlisted ? "fill-red-500 text-red-500" : "text-gray-600"
+            }`}
+          />
+        </button>
         <Image
           src={product.image}
           alt={product.title}
-          width={200}
-          height={200}
-          className="object-contain h-44"
+          className="object-contain"
+          fill
         />
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <CardTitle>{product.title}</CardTitle>
-        <p>{product.description.slice(0, 20)}</p>
-      </CardContent>
-      <CardFooter>
-        <div className="w-full flex justify-between">
-          <span>$ {product.price}</span>
-          <div className="flex gap-1">
-            {new Array(Math.round(product.rating.rate)).fill(0).map((_, i) => (
-              <StarIcon
-                key={i}
-                className="fill-yellow-500 text-yellow-500 !size-5"
-              />
-            ))}
-            {new Array(5 - Math.round(product.rating.rate))
-              .fill(0)
-              .map((_, i) => (
-                <StarIcon key={i} className="text-muted-foreground !size-5" />
-              ))}
-            <span className="text-muted-foreground text-sm">
-              ({product.rating.count})
-            </span>
+      </div>
+
+      <div className="flex-grow flex flex-col gap-1">
+        <h3 className="flex-grow font-medium text-sm line-clamp-2">
+          {product.title}
+        </h3>
+        <div className="">
+          <div className="flex items-center gap-2">
+            <p className="text-lg font-bold">${product.price}</p>
+            <div className="flex gap-0.5 items-center">
+              <StarIcon className="fill-yellow-500 text-yellow-500 !size-4" />
+              <span className="text-sm text-muted-foreground">
+                {product.rating.rate} ({product.rating.count})
+              </span>
+            </div>
           </div>
+
+          {isInCart(product.id) ? (
+            <QuantityControls
+              onRemove={() => removeFromCart(product.id)}
+              quantity={quantity}
+              onIncrement={() => incrementQuantity(product.id)}
+              onDecrement={() => decrementQuantity(product.id)}
+              showTotal
+              price={product.price}
+            />
+          ) : (
+            <button
+              onClick={handleAddToCart}
+              className="w-full bg-blue-500 text-white px-3 py-1.5 rounded-md hover:bg-blue-600 text-sm mt-1"
+            >
+              Add to Cart
+            </button>
+          )}
         </div>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 }
