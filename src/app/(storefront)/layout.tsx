@@ -31,9 +31,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
         <CartProvider>
-          <div className="flex flex-col gap-10">
+          <div className="flex-grow h-full flex flex-col gap-10">
             <Header />
-            <main className="flex-1 flex items-center justify-center">
+            <main className="flex-1 flex justify-center">
               <div className="w-11/12">{children}</div>
             </main>
             <Footer />
