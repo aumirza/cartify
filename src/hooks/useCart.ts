@@ -21,6 +21,10 @@ export const useCart = () => {
     dispatch({ type: "DECREMENT_QUANTITY", productId });
   };
 
+  const clearCart = () => {
+    dispatch({ type: "CLEAR_CART" });
+  };
+
   const isInCart = (productId: string) => {
     return state.items.some((item) => item.product.id === productId);
   };
@@ -31,6 +35,7 @@ export const useCart = () => {
     removeFromCart,
     incrementQuantity,
     decrementQuantity,
+    clearCart,
     isInCart,
   };
 };

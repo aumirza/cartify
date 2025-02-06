@@ -5,8 +5,13 @@ import { QuantityControls } from "@/components/QuantityControls";
 import Image from "next/image";
 
 export default function CartPage() {
-  const { cart, removeFromCart, incrementQuantity, decrementQuantity } =
-    useCart();
+  const {
+    cart,
+    removeFromCart,
+    incrementQuantity,
+    decrementQuantity,
+    clearCart,
+  } = useCart();
 
   const total = useMemo(
     () =>
@@ -39,8 +44,16 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Shopping Cart</h1>
+    <div className="flex flex-col container mx-auto p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Shopping Cart</h1>
+        <button
+          onClick={clearCart}
+          className="bg-destructive text-destructive-foreground px-4 py-2 rounded hover:bg-destructive/90"
+        >
+          Empty Cart
+        </button>
+      </div>
       <div className="space-y-4">
         {cart.map((item) => (
           <div

@@ -16,7 +16,9 @@ type CartAction =
   | { type: "ADD_TO_CART"; product: IProduct }
   | { type: "REMOVE_FROM_CART"; productId: string }
   | { type: "INCREMENT_QUANTITY"; productId: string }
-  | { type: "DECREMENT_QUANTITY"; productId: string };
+  | { type: "DECREMENT_QUANTITY"; productId: string }
+  | { type: "CLEAR_CART" };
+// | { type: "SYNC_STORAGE"; items: CartItem[] };
 
 const CartContext = createContext<{
   state: CartState;
@@ -73,6 +75,12 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
             ? { ...item, quantity: item.quantity - 1 }
             : item
         ),
+      };
+      break;
+    case "CLEAR_CART":
+      newState = {
+        ...state,
+        items: [],
       };
       break;
     default:
