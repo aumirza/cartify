@@ -37,3 +37,20 @@ export async function fetchProductsByCategory(category: string) {
     return [];
   }
 }
+
+export async function fetchProduct(id: string) {
+  try {
+    const res = await fetch(`https://fakestoreapi.com/products/${id}`);
+    const raw = await res.json();
+    return {
+      ...raw,
+      rating: {
+        rate: Math.round(Math.random() * 5),
+        count: Math.floor(Math.random() * 1000),
+      },
+    } as IProduct;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
