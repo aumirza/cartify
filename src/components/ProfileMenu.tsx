@@ -9,8 +9,11 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { auth, signOut } from "@/lib/auth";
 
-export function ProfileMenu() {
+export async function ProfileMenu() {
+  const session = await auth();
+  const user = session?.user;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -24,8 +27,8 @@ export function ProfileMenu() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium">username</p>
-            <p className="text-xs text-muted-foreground">user@example.com</p>
+            <p className="text-sm font-medium">{user?.name}</p>
+            <p className="text-xs text-muted-foreground">{user?.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -36,7 +39,16 @@ export function ProfileMenu() {
           <Link href="/orders">Orders</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem>
+          <form
+            action={async () => {
+              "use server";
+              await signOut();
+            }}
+          >
+            <Button> Log out</Button>
+          </form>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
