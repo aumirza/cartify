@@ -1,26 +1,35 @@
-import { config } from "dotenv";
-config({ path: ".env" }); // Load environment variables
+// import type { drizzle as drizzlePostgresType } from "drizzle-orm/node-postgres";
+// import type { drizzle as drizzlePgliteType } from "drizzle-orm/pglite";
 
-import { drizzle as drizzlePostgres } from "drizzle-orm/node-postgres";
-import { drizzle as drizzlePglite } from "drizzle-orm/pglite";
-import { Pool } from "pg";
-import { PGlite } from "@electric-sql/pglite";
-import { NodeFS } from "@electric-sql/pglite/nodefs";
+// let db:
+//   | ReturnType<typeof drizzlePostgresType>
+//   | ReturnType<typeof drizzlePgliteType>;
 
-let db: ReturnType<typeof drizzlePostgres> | ReturnType<typeof drizzlePglite>;
+// async function initializeDb() {
+// if (process.env.NODE_ENV === "production") {
+//   const { Pool } = await import("pg");
+//   const { drizzle } = await import("drizzle-orm/node-postgres");
+//   const client = new Pool({
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//       rejectUnauthorized: false,
+//     },
+//   });
+//   return (db = drizzle(client));
+// } else {
+//   const { PGlite } = await import("@electric-sql/pglite");
+//   const { drizzle } = await import("drizzle-orm/pglite");
+//   const client = new PGlite(process.env.DATABASE_URL);
+//   return (db = drizzle(client));
+// }
+// }
 
-if (process.env.NODE_ENV === "production") {
-  const client = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-  });
-  db = drizzlePostgres(client);
-} else {
-  const client = new PGlite({
-    // filesystem
-    fs: new NodeFS(process.env.DATABASE_URL!),
-  });
-  db = drizzlePglite(client);
-}
+// db = await initializeDb();
+
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+
+const client = neon<boolean, boolean>(process.env.DATABASE_URL!);
+const db = drizzle({ client });
 
 export default db;
