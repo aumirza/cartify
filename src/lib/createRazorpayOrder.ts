@@ -1,4 +1,3 @@
-"use server";
 import { razorpay } from "./razorpay";
 
 type CreateOrderOptions = {
@@ -11,12 +10,13 @@ type CreateOrderOptions = {
 export async function createRazorpayOrder({
   amount,
   currency = "INR",
-  receipt = `receipt_${Date.now()}`,
+  receipt = `receipt_${Date.now().toString()}`,
   notes = {},
 }: CreateOrderOptions) {
   try {
+    const amountInPaise = Math.ceil(amount * 100);
     const order = await razorpay.orders.create({
-      amount: amount * 100, // convert to paise
+      amount: amountInPaise, // in paise
       currency,
       receipt,
       notes,
@@ -24,6 +24,7 @@ export async function createRazorpayOrder({
 
     return order;
   } catch (err: any) {
-    throw new Error(`Failed to create Razorpay order: ${err.message}`);
+    console.error("Razorpay Error", err);
+    throw new Error(`Failed to create Razorpay order`);
   }
 }
