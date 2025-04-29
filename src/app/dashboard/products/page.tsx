@@ -1,4 +1,4 @@
-import { fetchProducts } from "@/api/fetchProducts";
+import { fetchProducts } from "@/services/api/fetchProducts";
 import { DataTable } from "@/components/products/DataTable";
 import { columns } from "@/components/products/columns";
 
