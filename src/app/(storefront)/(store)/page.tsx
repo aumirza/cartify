@@ -1,7 +1,7 @@
 // import Image from "next/image";
 import Link from "next/link";
-import { fetchProducts } from "@/api/fetchProducts";
-import { fetchCategories } from "@/api/fetchCategories";
+import { fetchProducts } from "@/services/api/fetchProducts";
+import { fetchCategories } from "@/services/api/fetchCategories";
 import { ProductsGrid } from "@/components/ProductsGrid";
 
 export default async function Home() {

@@ -1,4 +1,4 @@
-import { fetchProducts } from "@/api/fetchProducts";
+import { fetchProducts } from "@/services/api/fetchProducts";
 import { ProductsWithFilter } from "@/components/ProductsWithFilter";
 
 export default async function ProductsPage() {

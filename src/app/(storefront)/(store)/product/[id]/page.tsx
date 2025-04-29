@@ -1,4 +1,4 @@
-import { fetchProduct } from "@/api/fetchProducts";
+import { fetchProduct } from "@/services/api/fetchProducts";
 import { ProductDetails } from "@/components/ProductDetails";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { notFound } from "next/navigation";

@@ -1,5 +1,5 @@
 import { ProductsGrid } from "@/components/ProductsGrid";
-import { fetchProductsByCategory } from "@/api/fetchProducts";
+import { fetchProductsByCategory } from "@/services/api/fetchProducts";
 
 export default async function CategoryPage({
   params,
