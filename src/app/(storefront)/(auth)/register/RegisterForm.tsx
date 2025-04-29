@@ -24,7 +24,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
-import { signUpFormSchema } from "@/schemas/signupFormSchema";
+import { signupUserAction } from "@/actions/signupUserAction";
+import { signUpFormSchema } from "@/schemas/signupSchema";
 
 export function RegisterForm() {
   const form = useForm<z.infer<typeof signUpFormSchema>>({
@@ -38,17 +39,30 @@ export function RegisterForm() {
   });
 
   async function onSubmit(values: z.infer<typeof signUpFormSchema>) {
-    try {
-      // Assuming an async registration function
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
-    } catch (error) {
-      console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+    const res = await signupUserAction(values);
+    form.reset();
+
+    if (res.success) {
+      toast.success("Account created successfully");
+      // redirect
+    } else {
+      switch (res.statusCode) {
+        case 400:
+          Object.entries(res.errors.fieldErrors).forEach(
+            ([field, messages]) => {
+              if (messages) {
+                form.setError(field as keyof z.infer<typeof signUpFormSchema>, {
+                  type: "manual",
+                  message: messages[0],
+                });
+              }
+            }
+          );
+          break;
+        case 500:
+          toast.error("Internal server errror occured");
+          break;
+      }
     }
   }
 

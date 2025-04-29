@@ -22,12 +22,10 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="flex-grow h-full flex flex-col gap-10">
-            <main className="flex-1 flex justify-center">
-              <div className="w-11/12">{children}</div>
-            </main>
-            <Toaster />
-          </div>
+          <main className="h-full flex-1 flex items-center justify-center">
+            {children}
+          </main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>
