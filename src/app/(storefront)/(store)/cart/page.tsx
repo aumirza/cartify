@@ -3,6 +3,8 @@ import React, { useMemo } from "react";
 import { useCart } from "@/hooks/useCart";
 import { QuantityControls } from "@/components/QuantityControls";
 import Image from "next/image";
+import CheckoutButton from "./CheckoutButton";
+import { CURRENCY_SYMBOL } from "@/contants/currency";
 
 export default function CartPage() {
   const {
@@ -18,21 +20,6 @@ export default function CartPage() {
       cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0),
     [cart]
   );
-
-  const handleCheckout = () => {
-    console.log("Checkout Details:");
-    console.log(
-      "Items:",
-      cart.map((item) => ({
-        id: item.product.id,
-        title: item.product.title,
-        price: item.product.price,
-        quantity: item.quantity,
-        subtotal: item.product.price * item.quantity,
-      }))
-    );
-    console.log("Total Amount:", total.toFixed(2));
-  };
 
   if (cart.length === 0) {
     return (
@@ -71,7 +58,9 @@ export default function CartPage() {
               </div>
               <div>
                 <h3 className="font-semibold">{item.product.title}</h3>
-                <p className="text-gray-600">${item.product.price}</p>
+                <p className="text-gray-600">
+                  {`${CURRENCY_SYMBOL} ${item.product.price}`}
+                </p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -92,13 +81,10 @@ export default function CartPage() {
         ))}
       </div>
       <div className="mt-8 text-right space-y-4">
-        <p className="text-xl font-bold">Total: ${total.toFixed(2)}</p>
-        <button
-          onClick={handleCheckout}
-          className="bg-primary text-primary-foreground px-6 py-2 rounded hover:bg-primary/90"
-        >
-          Proceed to Checkout
-        </button>
+        <p className="text-xl font-bold">
+          {`Total: ${CURRENCY_SYMBOL} ${total.toFixed(2)}`}
+        </p>
+        <CheckoutButton total={total} />
       </div>
     </div>
   );
