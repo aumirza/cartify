@@ -7,6 +7,7 @@ import { useCart } from "@/hooks/useCart";
 import { QuantityControls } from "./QuantityControls";
 import { WishlistButton } from "./WishlistButton";
 import Link from "next/link";
+import { CURRENCY_SYMBOL } from "@/contants/currency";
 
 export function ProductCard({ product }: { product: IProduct }) {
   const {
@@ -50,7 +51,9 @@ export function ProductCard({ product }: { product: IProduct }) {
         </Link>
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
-            <p className="text-lg font-bold">${product.price}</p>
+            <p className="text-lg font-bold">
+              {`${CURRENCY_SYMBOL} ${product.price}`}
+            </p>
             <div className="flex gap-0.5 items-center">
               <StarIcon className="fill-yellow-500 text-yellow-500 !size-4" />
               <span className="text-sm text-muted-foreground">
