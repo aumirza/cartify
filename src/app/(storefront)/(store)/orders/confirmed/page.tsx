@@ -48,7 +48,8 @@ export default function OrderConfirmationPage() {
 
         <div className="space-y-4">
           <p className="text-sm text-gray-600">
-            We'll send you shipping confirmation when your order is on the way.
+            We&apos;ll send you shipping confirmation when your order is on the
+            way.
           </p>
 
           <Link
