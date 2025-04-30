@@ -1,8 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/hooks/useCart";
 import { useState } from "react";
 import { toast } from "sonner";
+
+import { useRouter } from "next/navigation";
 
 function loadScript(src: string) {
   return new Promise((resolve) => {
@@ -20,6 +23,8 @@ function loadScript(src: string) {
 
 export function CheckoutButton({ total }: { total: number }) {
   const [loading, setLoading] = useState(false);
+  const { clearCart } = useCart();
+  const router = useRouter();
 
   const handleCheckout = async () => {
     setLoading(true);
@@ -58,8 +63,8 @@ export function CheckoutButton({ total }: { total: number }) {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
         amount: order.amount,
         currency: order.currency,
-        name: "Your App Name",
-        description: "Purchase Description",
+        name: "Cartify",
+        description: "Order",
         order_id: order.id,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         handler: async function (response: any) {
@@ -73,6 +78,9 @@ export function CheckoutButton({ total }: { total: number }) {
             const verifyJson = await verifyRes.json();
 
             if (verifyJson.success) {
+              console.log(verifyJson);
+              clearCart();
+              router.push("/orders/confirmed");
               toast.success("Payment verified successfully!");
             } else {
               toast.error("Payment verification failed.");
@@ -83,7 +91,7 @@ export function CheckoutButton({ total }: { total: number }) {
           }
         },
         prefill: {
-          name: "Test User",
+          name: "Tes",
           email: "test@example.com",
           contact: "9999999999",
         },
