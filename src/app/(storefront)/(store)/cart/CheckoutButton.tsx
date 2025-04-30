@@ -4,13 +4,36 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
 
-export default function CheckoutButton({ total }: { total: number }) {
+function loadScript(src: string) {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => {
+      resolve(false);
+    };
+    document.body.appendChild(script);
+  });
+}
+
+export function CheckoutButton({ total }: { total: number }) {
   const [loading, setLoading] = useState(false);
 
   const handleCheckout = async () => {
     setLoading(true);
 
     try {
+      const scr = await loadScript(
+        "https://checkout.razorpay.com/v1/checkout.js"
+      );
+
+      if (!scr) {
+        alert("Razorpay SDK failed to load...");
+        return;
+      }
+
       const res = await fetch("/api/createOrder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,6 +77,7 @@ export default function CheckoutButton({ total }: { total: number }) {
               toast.error("Payment verification failed.");
             }
           } catch (err) {
+            console.log(err);
             toast.error("Error verifying payment.");
           }
         },
@@ -67,7 +91,7 @@ export default function CheckoutButton({ total }: { total: number }) {
 
       const rzp = new (window as any).Razorpay(razorpayOptions);
       rzp.open();
-    } catch (error: any) {
+    } catch (error) {
       console.log(error);
       toast.error("Something went wrong on server");
     } finally {

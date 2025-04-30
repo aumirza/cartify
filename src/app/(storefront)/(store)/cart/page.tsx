@@ -3,7 +3,7 @@ import React, { useMemo } from "react";
 import { useCart } from "@/hooks/useCart";
 import { QuantityControls } from "@/components/QuantityControls";
 import Image from "next/image";
-import CheckoutButton from "./CheckoutButton";
+import { CheckoutButton } from "./CheckoutButton";
 import { CURRENCY_SYMBOL } from "@/contants/currency";
 
 export default function CartPage() {
