@@ -12,6 +12,7 @@ export class UserRepository {
         .limit(1);
       return user ?? null;
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to fetch user by email");
     }
   }
@@ -24,6 +25,7 @@ export class UserRepository {
         .returning();
       return user;
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to create user");
     }
   }
@@ -35,6 +37,7 @@ export class UserRepository {
         .set({ password: newPassword })
         .where(eq(users.id, userId));
     } catch (error) {
+      console.log(error);
       throw new Error("Failed to update password");
     }
   }

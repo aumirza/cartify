@@ -47,7 +47,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           placeholder: "Super secure",
         },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const parsed = await loginSchema.parseAsync(credentials);
         if (!parsed) throw new InvalidLoginError();
         const user = await UserRepository.getUserByEmail(parsed.email);
@@ -63,7 +63,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Google,
   ],
   callbacks: {
-    async session({ session, user, token }: any) {
+    async session({ session }: any) {
       return session;
     },
   },
@@ -72,5 +72,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 });
 
-const providersUsed = ["credentials", "google"] as const;
+export const providersUsed = ["credentials", "google"] as const;
 export type availableProviders = (typeof providersUsed)[number];
