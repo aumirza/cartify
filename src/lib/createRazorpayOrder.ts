@@ -23,7 +23,7 @@ export async function createRazorpayOrder({
     });
 
     return order;
-  } catch (err: any) {
+  } catch (err) {
     console.error("Razorpay Error", err);
     throw new Error(`Failed to create Razorpay order`);
   }

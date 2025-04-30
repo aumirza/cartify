@@ -14,8 +14,10 @@ export async function POST(req: Request) {
     const order = await createRazorpayOrder({ amount });
 
     return NextResponse.json(order);
-  } catch (error: any) {
+  } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "An unexpected error occurred";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

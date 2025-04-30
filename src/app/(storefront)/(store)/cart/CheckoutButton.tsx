@@ -61,6 +61,7 @@ export function CheckoutButton({ total }: { total: number }) {
         name: "Your App Name",
         description: "Purchase Description",
         order_id: order.id,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         handler: async function (response: any) {
           try {
             const verifyRes = await fetch("/api/razorpay/verify", {
@@ -89,6 +90,7 @@ export function CheckoutButton({ total }: { total: number }) {
         theme: { color: "#6366f1" }, // Indigo
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const rzp = new (window as any).Razorpay(razorpayOptions);
       rzp.open();
     } catch (error) {

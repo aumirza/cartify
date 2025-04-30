@@ -1,4 +1,4 @@
-import NextAuth, { CredentialsSignin } from "next-auth";
+import NextAuth, { CredentialsSignin, Session } from "next-auth";
 import Google from "next-auth/providers/google";
 import credentials from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
@@ -63,7 +63,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     Google,
   ],
   callbacks: {
-    async session({ session }: any) {
+    async session({ session }: { session: Session }) {
       return session;
     },
   },
