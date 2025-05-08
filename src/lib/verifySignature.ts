@@ -1,4 +1,3 @@
-// lib/verifySignature.ts
 import crypto from "crypto";
 
 type RazorpayVerifyInput = {
