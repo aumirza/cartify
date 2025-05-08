@@ -17,7 +17,7 @@ export class UserRepository {
     }
   }
 
-  static async createUser(data: { email: string; password: string }) {
+  static async createUser(data: { name:string;email: string; password: string }) {
     try {
       const [user] = await db
         .insert(users)

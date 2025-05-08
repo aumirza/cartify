@@ -1,14 +1,18 @@
 import { UserRepository } from "@/db/repositories/userRepository";
+import { hashPassword } from "@/lib/hash";
 
 export async function createUser({
+  name,
   email,
   password,
 }: {
+  name:string;
   email: string;
   password: string;
 }) {
   try {
-    await UserRepository.createUser({ email, password });
+    const hashedPassword = await hashPassword(password)
+    await UserRepository.createUser({ name,email, password:hashedPassword });
 
     // notify with email or confirm
   } catch (error) {
