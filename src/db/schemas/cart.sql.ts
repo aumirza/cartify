@@ -1,4 +1,4 @@
-import { integer, pgTable, serial } from "drizzle-orm/pg-core";
+import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
 import { timestamps } from "./column.helpers";
 import { users } from "./auth.sql";
 import { products } from "./product.sql";
@@ -6,7 +6,7 @@ import { products } from "./product.sql";
 // Carts
 export const carts = pgTable("carts", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id), // nullable for guest carts if needed
+  userId: text("user_id").references(() => users.id), // nullable for guest carts if needed
   ...timestamps,
 });
 

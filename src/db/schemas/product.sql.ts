@@ -13,11 +13,14 @@ import {
 import { users } from "./auth.sql";
 import { timestamps } from "./column.helpers";
 
+const PRODUCT_TYPE_VALUES = ["digital", "physical"] as const;
+
 export const productTypes = {
-  DIGITAL: "digital",
-  PHYSICAL: "physical",
-};
-const productTypeEnum = pgEnum("product_type", productTypes);
+  DIGITAL: PRODUCT_TYPE_VALUES[0],
+  PHYSICAL: PRODUCT_TYPE_VALUES[1],
+} as const;
+
+export const productTypeEnum = pgEnum("product_type", PRODUCT_TYPE_VALUES);
 export type IProductTypes = (typeof productTypes)[keyof typeof productTypes];
 
 // Products
@@ -53,7 +56,7 @@ export const productInventory = pgTable("product_inventory", {
 // Orders
 export const orders = pgTable("orders", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
+  userId: text("user_id").references(() => users.id),
   status: varchar("status", { length: 50 }).default("pending"),
   totalAmount: decimal("total_amount", { precision: 10, scale: 2 }),
   createdAt: timestamp("created_at").defaultNow().notNull(),
