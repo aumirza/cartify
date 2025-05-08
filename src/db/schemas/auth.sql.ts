@@ -1,21 +1,38 @@
 import { randomUUID } from "@/utils/uuid";
-import { boolean, integer } from "drizzle-orm/pg-core";
+import {
+  AnyPgColumn,
+  boolean,
+  integer,
+  pgEnum,
+  uniqueIndex,
+} from "drizzle-orm/pg-core";
 import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { timestamps } from "./column.helpers";
+import { SQL, sql } from "drizzle-orm";
 
-export const users = pgTable("user", {
-  id: text("id")
-    .primaryKey()
-    .$defaultFn(() => randomUUID()),
-  name: text("name"),
-  email: text("email").unique(),
-  emailVerified: timestamp("emailVerified", { mode: "date" }),
-  image: text("image"),
-  password: text("password"),
-  role: text("role").default("user"),
-  ...timestamps,
-});
+export const roleEnum = pgEnum("role", ["user", "admin"]);
+
+export function lower(email: AnyPgColumn): SQL {
+  return sql`lower(${email})`;
+}
+
+export const users = pgTable(
+  "user",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => randomUUID()),
+    name: text("name"),
+    email: text("email").unique(),
+    emailVerified: timestamp("emailVerified", { mode: "date" }),
+    image: text("image"),
+    password: text("password"),
+    role: roleEnum("role").notNull().default("user"),
+    ...timestamps,
+  },
+  (table) => [uniqueIndex("emailUniqueIndex").on(lower(table.email))]
+);
 
 export const accounts = pgTable(
   "account",
