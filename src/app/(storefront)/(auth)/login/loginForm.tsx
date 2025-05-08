@@ -25,10 +25,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { loginSchema } from "@/schemas/loginSchema";
-import { signIn } from "next-auth/react";
 import { LoginWithGoogle } from "./LoginWithGoogle";
+import { loginUserAction } from "@/actions/loginUserAction";
+import { LoaderCircleIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function LoginForm() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -37,15 +40,40 @@ export function LoginForm() {
     },
   });
 
+  const {
+    formState: { isSubmitting },
+  } = form;
+
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     try {
-      await signIn("credentials", {
-        email: values.email,
-        password: values.password,
-        redirect: true,
-        callbackUrl: "/",
-      });
-      toast.success("Logged in successfully");
+      const res = await loginUserAction(values);
+      console.log(res);
+
+      if (res.success) {
+        toast.success("Logged in successfully");
+        router.push("/");
+      } else {
+        switch (res.statusCode) {
+          case 400:
+            Object.entries(res.errors.fieldErrors).forEach(
+              ([field, messages]) => {
+                if (messages) {
+                  form.setError(field as keyof z.infer<typeof loginSchema>, {
+                    type: "manual",
+                    message: messages[0],
+                  });
+                }
+              }
+            );
+            break;
+          case 401:
+            toast.error(res.error.name);
+            break;
+          case 500:
+            toast.error("Internal server errror occured");
+            break;
+        }
+      }
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
@@ -110,7 +138,14 @@ export function LoginForm() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting && (
+                    <LoaderCircleIcon className="animate-spin" />
+                  )}
                   Login
                 </Button>
               </div>
