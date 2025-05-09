@@ -1,10 +1,11 @@
-import NextAuth, { CredentialsSignin, Session } from "next-auth";
+import NextAuth, { CredentialsSignin, User } from "next-auth";
 import Google from "next-auth/providers/google";
 import credentials from "next-auth/providers/credentials";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import db from "@/db/drizzle";
 import {
   accounts,
+  IUserRole,
   sessions,
   users,
   verificationTokens,
@@ -59,14 +60,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           throw new InvalidLogin("Use another method for login.");
         const match = await comparePassword(parsed.password, user.password);
         if (!match) throw new InvalidCredentials();
-        return user;
+        return user as User;
       },
     }),
 
     Google,
   ],
   callbacks: {
-    async session({ session }: { session: Session }) {
+    async jwt({ token, user }) {
+      if (!user) return token;
+      const dbUser = await UserRepository.getUserById(user.id as string);
+      if (dbUser) {
+        token.role = dbUser.role;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session.user) {
+        if (token.role) session.user.role = token.role as IUserRole;
+      }
       return session;
     },
   },
