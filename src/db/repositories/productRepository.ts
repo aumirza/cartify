@@ -1,6 +1,6 @@
-// repositories/productRepository.ts
 import db from "@/db/drizzle";
 import {
+  IProductTypes,
   productInventory,
   products,
   productTypes,
@@ -10,6 +10,29 @@ import { eq } from "drizzle-orm";
 export const productRepository = {
   async findAll() {
     return db.select().from(products);
+  },
+
+  async getProductsPaginated(
+    page: number = 1,
+    pageSize: number = 8,
+    searchQuery?: string,
+    productType?: IProductTypes
+  ) {
+    const offset = (page - 1) * pageSize;
+    const query = db.select().from(products).limit(pageSize).offset(offset);
+
+    if (searchQuery) {
+      query.where(
+        eq(products.name, `%${searchQuery}%`) ||
+          eq(products.description, `%${searchQuery}%`)
+      );
+    }
+
+    if (productType) {
+      query.where(eq(products.type, productType));
+    }
+
+    return query;
   },
 
   async findById(id: number) {
