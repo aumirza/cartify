@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "./DataTableColumnHeader";
+import { IProduct } from "@/types/models";
 
 export const columns: ColumnDef<IProduct>[] = [
   {
@@ -25,7 +26,7 @@ export const columns: ColumnDef<IProduct>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "title",
+    accessorKey: "name",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Title" />
     ),
@@ -39,17 +40,5 @@ export const columns: ColumnDef<IProduct>[] = [
       const price = parseFloat(row.getValue("price"));
       return <div className="font-medium">${price.toFixed(2)}</div>;
     },
-  },
-  {
-    accessorKey: "category",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Category" />
-    ),
-  },
-  {
-    accessorKey: "rating.rate",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Rating" />
-    ),
   },
 ];
