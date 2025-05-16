@@ -15,8 +15,8 @@ import { sidebarItems } from "@/config/dashNav";
 export function Sidebar() {
   return (
     <SidebarComponent className="min-h-screen bg-background border-r">
-      <SidebarHeader className="border-b px-6 py-3">
-        <h2 className="text-lg font-semibold text-foreground">Dashboard</h2>
+      <SidebarHeader className="border-b px-6 h-16 flex justify-center items-center">
+        <h2 className="text-4xl font-bold italic text-foreground">Dashboard</h2>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup />
