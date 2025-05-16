@@ -1,11 +1,11 @@
-// import Image from "next/image";
 import Link from "next/link";
-import { fetchProducts } from "@/services/api/fetchProducts";
 import { fetchCategories } from "@/services/api/fetchCategories";
 import { ProductsGrid } from "@/components/ProductsGrid";
+import { productRepository } from "@/db/repositories/productRepository";
 
 export default async function Home() {
-  const products = await fetchProducts(8);
+  const products = await productRepository.findAll();
+
   const categories = await fetchCategories();
 
   return (
