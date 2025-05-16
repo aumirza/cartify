@@ -10,8 +10,11 @@ import { pgTable, primaryKey, text, timestamp } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
 import { timestamps } from "./column.helpers";
 import { SQL, sql } from "drizzle-orm";
+import { z } from "zod";
 
-export const roleEnum = pgEnum("role", ["user", "admin"]);
+const roleEnum = pgEnum("role", ["user", "admin"]);
+const RoleEnum = z.enum(roleEnum.enumValues);
+export type IUserRole = z.infer<typeof RoleEnum>;
 
 export function lower(email: AnyPgColumn): SQL {
   return sql`lower(${email})`;
