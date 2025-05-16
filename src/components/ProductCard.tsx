@@ -8,6 +8,7 @@ import { QuantityControls } from "./QuantityControls";
 import { WishlistButton } from "./WishlistButton";
 import Link from "next/link";
 import { CURRENCY_SYMBOL } from "@/contants/currency";
+import { IProduct } from "@/types/models";
 
 export function ProductCard({ product }: { product: IProduct }) {
   const {
@@ -37,8 +38,8 @@ export function ProductCard({ product }: { product: IProduct }) {
             className="absolute top-4 right-4 z-10"
           />
           <Image
-            src={product.image}
-            alt={product.title}
+            src={product.thumbnailUrl ?? ""}
+            alt={product.name}
             className="object-contain"
             fill
           />
@@ -47,19 +48,19 @@ export function ProductCard({ product }: { product: IProduct }) {
 
       <div className="flex-grow flex flex-col gap-2">
         <Link className="flex-grow" href={`/product/${product.id}`}>
-          <h3 className="font-medium text-sm line-clamp-2">{product.title}</h3>
+          <h3 className="font-medium text-sm line-clamp-2">{product.name}</h3>
         </Link>
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-2">
             <p className="text-lg font-bold">
               {`${CURRENCY_SYMBOL} ${product.price}`}
             </p>
-            <div className="flex gap-0.5 items-center">
+            {/* <div className="flex gap-0.5 items-center">
               <StarIcon className="fill-yellow-500 text-yellow-500 !size-4" />
               <span className="text-sm text-muted-foreground">
                 {product.rating.rate} ({product.rating.count})
               </span>
-            </div>
+            </div> */}
           </div>
 
           {isInCart(product.id) ? (
@@ -69,7 +70,7 @@ export function ProductCard({ product }: { product: IProduct }) {
               onIncrement={() => incrementQuantity(product.id)}
               onDecrement={() => decrementQuantity(product.id)}
               showTotal
-              price={product.price}
+              price={Number(product.price)}
             />
           ) : (
             <button

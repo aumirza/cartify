@@ -1,6 +1,7 @@
 "use client";
 
 import { useCartContext } from "@/contexts/CartContext";
+import { IProduct } from "@/types/models";
 
 export const useCart = () => {
   const { state, dispatch } = useCartContext();
@@ -9,15 +10,15 @@ export const useCart = () => {
     dispatch({ type: "ADD_TO_CART", product });
   };
 
-  const removeFromCart = (productId: string) => {
+  const removeFromCart = (productId: IProduct["id"]) => {
     dispatch({ type: "REMOVE_FROM_CART", productId });
   };
 
-  const incrementQuantity = (productId: string) => {
+  const incrementQuantity = (productId: IProduct["id"]) => {
     dispatch({ type: "INCREMENT_QUANTITY", productId });
   };
 
-  const decrementQuantity = (productId: string) => {
+  const decrementQuantity = (productId: IProduct["id"]) => {
     dispatch({ type: "DECREMENT_QUANTITY", productId });
   };
 
@@ -25,7 +26,7 @@ export const useCart = () => {
     dispatch({ type: "CLEAR_CART" });
   };
 
-  const isInCart = (productId: string) => {
+  const isInCart = (productId: IProduct["id"]) => {
     return state.items.some((item) => item.product.id === productId);
   };
 

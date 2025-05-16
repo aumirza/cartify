@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { FilterControls } from "./FilterControls";
 import { ProductsGrid } from "./ProductsGrid";
+import { IProduct } from "@/types/models";
 
 export function ProductsWithFilter({
   products: aProducts,

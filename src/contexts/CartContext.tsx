@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useReducer, useEffect } from "react";
 import { loadFromStorage, saveToStorage } from "@/lib/localStorage";
+import { IProduct } from "@/types/models";
 
 interface CartItem {
   product: IProduct;
@@ -14,11 +15,12 @@ interface CartState {
 
 type CartAction =
   | { type: "ADD_TO_CART"; product: IProduct }
-  | { type: "REMOVE_FROM_CART"; productId: string }
-  | { type: "INCREMENT_QUANTITY"; productId: string }
-  | { type: "DECREMENT_QUANTITY"; productId: string }
+  | { type: "REMOVE_FROM_CART"; productId: IProduct["id"] }
+  | { type: "INCREMENT_QUANTITY"; productId: IProduct["id"] }
+  | { type: "DECREMENT_QUANTITY"; productId: IProduct["id"] }
   | { type: "CLEAR_CART" }
-  | { type: "SYNC_STORAGE"; items: CartItem[] };
+  | { type: "SYNC_STORAGE"; items: CartItem[] }
+  | { type: "UPDATE_CART"; items: CartItem[] };
 
 const CartContext = createContext<{
   state: CartState;
@@ -88,6 +90,14 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         ...state,
         items: action.items,
       };
+      break;
+
+    case "UPDATE_CART":
+      newState = {
+        ...state,
+        items: action.items,
+      };
+      break;
     default:
       newState = state;
   }
@@ -110,7 +120,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     const handleFocus = () => {
       const storedCart = loadFromStorage("CART", { items: [] });
       if (JSON.stringify(storedCart) !== JSON.stringify(state)) {
+        // Perform background merge
         dispatch({ type: "SYNC_STORAGE", ...storedCart });
+        // syncCartWithServer(storedCart).then((mergedItems) => {
+        //   dispatch({ type: "UPDATE_CART", items: mergedItems });
+        // });
       }
     };
 
